@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import generics, mixins
-# from ratings import *
+from ratings import *
 from .models import User
 from .serializers import UserSerializer
 
@@ -34,4 +34,12 @@ class BusinessDetails(generics.GenericAPIView):
 class UserView(generics.CreateAPIView):
     model = User
     serializer_class = UserSerializer
+
+    def post(self, request, *args, **kwargs):
+        if User.objects.filter(mobile=request.data['mobile']).exists():
+            User.objects.get(mobile=request.data['mobile']).name=request.data['name']
+            User.objects.get(mobile=request.data['mobile']).save()
+            return Response(UserSerializer(instance=User.objects.get(mobile=request.data['mobile'])).data)
+        else:
+            return super().post(request, *args, **kwargs)
     
