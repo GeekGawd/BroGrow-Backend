@@ -1,11 +1,17 @@
 from operator import itemgetter
+from unicodedata import category
 import pandas as pd
 import requests
 from parse import percentage_change_sector_fetcher
 from django.template.defaultfilters import slugify
 import json
+from decouple import config
 
-GEOAPIFY_API_KEY = 'eaa748509d7a417ab619ab9da43337ed'
+GEOAPIFY_API_KEY = config("GEOAPIFY_API_KEY")
+GOOGLE_API_KEY = config("GOOGLE_API_KEY")
+
+def bayesian_rating(rating, total_ratings):
+    return (((5*3)+(rating * total_ratings))/(5+total_ratings))/5*100
 
 sector_to_category = { ('Hospitality', ''):'accommodation',
                         ('Logistics', ''): 'public_transport',
@@ -26,27 +32,37 @@ def competitor_analysis(pincode, typeOfBusiness=None):
     feature_res1 = res1['features'][0]['properties']
     lon = feature_res1['lon']
     lat = feature_res1['lat']    
-
-    place_api_url_to_hit = f"https://api.geoapify.com/v2/places?categories=commercial.supermarket&filter=circle:{lon},{lat},5000&bias=proximity:77.2,28.6&limit=20&apiKey={GEOAPIFY_API_KEY}"
+    place_api_url_to_hit = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={GOOGLE_API_KEY}&location={lat},{lon}&radius=5000&type=night_club"
     res2 = requests.get(place_api_url_to_hit).json()
-    competitorsObj = res2['features']
-    competitorList = []
-    for comp in competitorsObj:
+    if res2['status'] == 'OK':
+        competitorsObj = res2['results']
+        competitorList = []
+        for comp in competitorsObj:
+            try:
+                if comp["business_status"] == "OPERATIONAL":
+                    competitorList.append({"competitor_name": comp['name'], "competitor_rating": bayesian_rating(comp['rating'], comp['user_ratings_total'])})
+            except (KeyError):
+                pass
+        competitorList = sorted(competitorList, key=lambda x : x['competitor_rating'], reverse=True)
+        number_of_competitors = len(competitorList)
         try:
-            competitorList.append(comp['properties']['name'])
-        except KeyError:
-            pass
+            competitor_rating = 100/number_of_competitors
+        except ZeroDivisionError:
+            competitor_rating = 0
 
-    number_of_competitors = len(competitorList)
-
-    competitor_rating = 100/number_of_competitors
-
-    obj = {
-        'name':'Competition Score',
-        'rating': competitor_rating,
-        'competitors' : competitorList,
-        'remarks':''
-    }  
+        obj = {
+            'name':'Competition Score',
+            'rating': competitor_rating,
+            'competitors' : competitorList,
+            'remarks':''
+        }  
+    else:
+        obj = {
+            'name':'Competition Score',
+            'rating': 0,
+            'competitors' : [],
+            'remarks':'No competitor in the given area'
+        }  
     return obj
 
 def oppurtunity_rating(state,businessDistrict):
