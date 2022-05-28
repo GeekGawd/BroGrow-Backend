@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import generics, mixins
 from ratings import *
+from .models import User
+from .serializers import UserSerializer
 
 # Create your views here.
 
@@ -28,3 +30,8 @@ class BusinessDetails(generics.GenericAPIView):
             "relativeProsperity": relativeProsperity,
             "easeOfBusiness": easeOfBusiness
         })
+
+class UserView(generics.CreateAPIView):
+    model = User
+    serializer_class = UserSerializer
+    

@@ -1,6 +1,7 @@
 from django.urls import path
-from map.views import BusinessDetails
+from map import views
 
 urlpatterns = [
-    path('business/', BusinessDetails.as_view(), name=''),
+    path('business/', views.BusinessDetails.as_view(), name=''),
+    path('user-create/', views.UserView.as_view(), name=''),
 ]
