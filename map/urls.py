@@ -4,4 +4,5 @@ from map import views
 urlpatterns = [
     path('business/', views.BusinessDetails.as_view(), name=''),
     path('user-create/', views.UserView.as_view(), name=''),
+    path('score/', views.ScoreView.as_view()),
 ]

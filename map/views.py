@@ -4,6 +4,8 @@ from rest_framework import generics, mixins
 from ratings import *
 from .models import User
 from .serializers import UserSerializer
+import pickle
+import random
 
 # Create your views here.
 
@@ -42,4 +44,36 @@ class UserView(generics.CreateAPIView):
             return Response(UserSerializer(instance=User.objects.get(mobile=request.data['mobile'])).data)
         else:
             return super().post(request, *args, **kwargs)
-    
+
+def credit_score(df):
+    try:
+        model=pickle.load(open("Credit-Model\Credit_Risk_Model_and_Credit_Scorecard.ipynb", 'rb'))
+        y_pred = model.predict(df) 
+        y_pred=(y_pred>0.80) 
+        result = "Yes" if y_pred else "No"
+        return result 
+    except ValueError as e: 
+        return e.args[0]
+
+class BroScrView(generics.GenericAPIView):
+    def post(self, request):
+
+        data = request.data
+        pincode = data.get('pincode')
+        state = data.get('state')
+        district = data.get('district')
+        typeOfBusiness = data.get('typeofbusiness') or None
+
+        competitorScore = competitor_analysis(pincode)['rating']
+        oppurtunityScore = oppurtunity_rating(state,district)['rating']
+        sectoralScore = sectoral_analysis(typeOfBusiness)['rating']
+        relativeScore = relative_prosperity(state,district)['rating']
+        easeOfBusiness = ease_of_business(pincode, state)['rating']
+
+        scr=competitorScore+oppurtunityScore+sectoralScore+relativeScore+easeOfBusiness
+        if 'Payload' in data.keys():
+            bal = float(data['Payload'][0]['data'][0]['decryptedFI']['account']['summary']['currentBalance'])
+        else:
+            bal = 50468.68
+        return Response({'BroScore':Score(scr, bal)})
+

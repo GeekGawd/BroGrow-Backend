@@ -5,6 +5,7 @@ import requests
 from parse import percentage_change_sector_fetcher
 from django.template.defaultfilters import slugify
 import json
+import math
 import os
 import environ
 
@@ -211,3 +212,14 @@ def ease_of_business(pincode, state):
         'remark':''
     }
     return Obj
+
+def Score(scr, bal):
+    if bal > 0:
+        digits = int(math.log10(bal))+1
+    elif bal == 0:
+        digits = 1
+    else:
+        digits = int(math.log10(-bal))+2
+    bal=bal/(10**(digits-3))
+    score = ((scr+bal)/(500+bal))*100
+    return score
