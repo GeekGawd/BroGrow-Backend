@@ -92,7 +92,7 @@ def oppurtunity_rating(state,businessDistrict):
 def sectoral_analysis(typeOfBusiness):
     homeUrl = 'https://www.moneycontrol.com/stocks/marketstats/sector-scan/bse/year-to-date.html'
     growthRateSectorWise = percentage_change_sector_fetcher(homeUrl) #[{'sectorName':'Electricals,'percentChange':1.63},{...}]
-    Sorted_growth_wise_sector_list = sorted(growthRateSectorWise,key=itemgetter('percentChange'))
+    Sorted_growth_wise_sector_list = sorted(growthRateSectorWise,key=lambda x : float(x['percentChange'][:-1]), reverse=True)
     print(typeOfBusiness)
 
     if typeOfBusiness is None:
@@ -115,18 +115,19 @@ def sectoral_analysis(typeOfBusiness):
 
     sector_rating = sector_score/len(growthRateSectorWise)
 
-    top_sector_list = []
-    for sec in Sorted_growth_wise_sector_list:
-        top_sector_list.append(sec['sectorName'])
+    # print(Sorted_growth_wise_sector_list)
+    # top_sector_list = []
+    # for sec in Sorted_growth_wise_sector_list:
+    #     top_sector_list.append(sec['sectorName'])
 
     defaultObj={
         'name': 'Sectoral Score',
         "rating": sector_rating*100,
-        "sectors":top_sector_list,
+        "top-performing-sectors":Sorted_growth_wise_sector_list[:5],
+        "non-performing-sectors":Sorted_growth_wise_sector_list[-5:],
         "remark":''
     }
     return defaultObj
-
 
 def relative_prosperity(state,district):
 
