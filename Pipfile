@@ -13,6 +13,8 @@ beautifulsoup4 = "*"
 requests = "*"
 pandas = "*"
 whitenoise = "*"
+environ = "*"
+django-environ = "*"
 
 [dev-packages]
 

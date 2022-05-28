@@ -5,10 +5,16 @@ import requests
 from parse import percentage_change_sector_fetcher
 from django.template.defaultfilters import slugify
 import json
-from decouple import config
+import os
+import environ
 
-GEOAPIFY_API_KEY = config("GEOAPIFY_API_KEY")
-GOOGLE_API_KEY = config("GOOGLE_API_KEY")
+#Initialise
+env = environ.Env()
+#to read all env files
+environ.Env.read_env()
+
+GEOAPIFY_API_KEY = env("GEOAPIFY_API_KEY")
+GOOGLE_API_KEY = env("GOOGLE_API_KEY")
 
 def bayesian_rating(rating, total_ratings):
     return (((5*3)+(rating * total_ratings))/(5+total_ratings))/5*100
