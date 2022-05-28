@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import generics, mixins
-from ratings import *
+# from ratings import *
 from .models import User
 from .serializers import UserSerializer
 
