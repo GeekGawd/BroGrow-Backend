@@ -15,11 +15,11 @@ class BusinessDetails(generics.GenericAPIView):
         pincode = data.get('pincode')
         state = data.get('state')
         district = data.get('district')
-        typeOfBusiness = data.get('typeofbusiness')
+        typeOfBusiness = data.get('typeofbusiness') or None
 
         competitorAnalysis = competitor_analysis(pincode)
         oppurtunityRating = oppurtunity_rating(state,district)
-        sectoralAnalysis = sectoral_analysis(typeOfBusiness.lower())
+        sectoralAnalysis = sectoral_analysis(typeOfBusiness)
         relativeProsperity = relative_prosperity(state,district)
         easeOfBusiness = ease_of_business(pincode, state)
 

@@ -71,6 +71,18 @@ def sectoral_analysis(typeOfBusiness):
     homeUrl = 'https://www.moneycontrol.com/stocks/marketstats/sector-scan/bse/year-to-date.html'
     growthRateSectorWise = percentage_change_sector_fetcher(homeUrl) #[{'sectorName':'Electricals,'percentChange':1.63},{...}]
     Sorted_growth_wise_sector_list = sorted(growthRateSectorWise,key=itemgetter('percentChange'))
+    print(typeOfBusiness)
+
+    if typeOfBusiness is None:
+        top_sector_list=[]
+        i=5
+        for sec in Sorted_growth_wise_sector_list:
+            top_sector_list.append(sec['sectorName'])
+            i-=1
+            if i==0:
+                break
+        defaultObj={ "sectors":top_sector_list }
+        return defaultObj
 
     sector_score = 0
     for sec in Sorted_growth_wise_sector_list:
@@ -91,10 +103,8 @@ def sectoral_analysis(typeOfBusiness):
         "sectors":top_sector_list,
         "remark":''
     }
-    print(defaultObj)
     return defaultObj
 
-sectoral_analysis('Alcohol')
 
 def relative_prosperity(state,district):
 
