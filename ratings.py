@@ -124,8 +124,8 @@ def sectoral_analysis(typeOfBusiness):
     defaultObj={
         'name': 'Sectoral Score',
         "rating": sector_rating*100,
-        "top-performing-sectors":Sorted_growth_wise_sector_list[:5],
-        "non-performing-sectors":Sorted_growth_wise_sector_list[-5:],
+        "top_performing_sectors":Sorted_growth_wise_sector_list[:5],
+        "non_performing_sectors":Sorted_growth_wise_sector_list[-5:],
         "remark":''
     }
     return defaultObj
