@@ -4,7 +4,7 @@ Bro-Grow is a business icubator Android App which enables entrepreneurs to make 
 
 ## Problem Statement
 
-![alt text](https://imgur.com/a/IfmcpCU "Reasons why Business Fail")
+![alt text](images/business-fail.png "Reasons why Business Fail")
 
 - According to Investopedia bad location is one of the major reasons why a business fails.
 - Organic foot traffic is important for business growth.
@@ -25,4 +25,16 @@ Our app creates insights into the location where you want to open a business usi
 
 ## Pictures
 
-![alt text](https://imgur.com/a/xrQDtCh "Bro-Grow Home Page")
+### Start Page with SMS Authentication
+![alt text](images/brogrow-home.png "Bro-Grow Start Page")
+![alt text](images/sms-authentication1.png "Bro-Grow SMS Authentication")
+![alt text](images/sms-authentication2.png "Bro-Grow SMS Authentication")
+
+### Home Page
+<img src="images/brogrom-analysis.jpeg" width="290">
+<img src="images/competition-analysis.jpeg" width="290">
+
+### SETU-API to fetch Transaction Details and Calculate CIBIL Score
+
+![alt text](images/transaction-details1.png "Bro-Grow Transaction")
+![alt text](images/transaction-details2.png "Bro-Grow Transaction")
