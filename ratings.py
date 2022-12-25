@@ -32,14 +32,14 @@ sector_to_category = { ('Hospitality', ''):'accommodation',
                         (''):'alcohol',
     }
 
-def competitor_analysis(pincode, typeOfBusiness=None):
+def competitor_analysis(pincode, typeOfBusiness="department_store"):
 
     resolve_pincode_url = f"https://api.geoapify.com/v1/geocode/autocomplete?text={pincode}&apiKey={GEOAPIFY_API_KEY}&limit=1"
     res1 = requests.get(resolve_pincode_url).json()
     feature_res1 = res1['features'][0]['properties']
     lon = feature_res1['lon']
     lat = feature_res1['lat']    
-    place_api_url_to_hit = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={GOOGLE_API_KEY}&location={lat},{lon}&radius=5000&type=night_club"
+    place_api_url_to_hit = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?key={GOOGLE_API_KEY}&location={lat},{lon}&radius=5000&type={typeOfBusiness}"
     res2 = requests.get(place_api_url_to_hit).json()
     if res2['status'] == 'OK':
         competitorsObj = res2['results']
