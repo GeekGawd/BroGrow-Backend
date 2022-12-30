@@ -19,3 +19,4 @@ class LoanApplication(models.Model):
     amount = models.IntegerField()
     status = models.BooleanField(default=False)
     financial_data = models.JSONField(blank=True, null=True)
+    created_at = models.CharField(max_length=100, blank=True, null=True)
