@@ -62,9 +62,8 @@ class BroScrView(generics.GenericAPIView):
         pincode = data.get('pincode')
         state = data.get('state')
         district = data.get('district')
-        typeOfBusiness = data.get('typeofbusiness') or None
-
-        competitorScore = competitor_analysis(pincode)['rating']
+        typeOfBusiness = data.get('typeofbusiness')
+        competitorScore = competitor_analysis(pincode, typeOfBusiness)['rating']
         oppurtunityScore = oppurtunity_rating(state,district)['rating']
         sectoralScore = sectoral_analysis(typeOfBusiness)['rating']
         relativeScore = relative_prosperity(state,district)['rating']
@@ -135,3 +134,6 @@ class LoanApplicationView(generics.GenericAPIView,
         queryset = self.model.objects.all()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+print("hello")

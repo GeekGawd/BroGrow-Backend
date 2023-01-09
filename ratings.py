@@ -94,7 +94,6 @@ def sectoral_analysis(typeOfBusiness):
     homeUrl = 'https://www.moneycontrol.com/stocks/marketstats/sector-scan/bse/year-to-date.html'
     growthRateSectorWise = percentage_change_sector_fetcher(homeUrl) #[{'sectorName':'Electricals,'percentChange':1.63},{...}]
     Sorted_growth_wise_sector_list = sorted(growthRateSectorWise,key=lambda x : float(x['percentChange'][:-1]), reverse=True)
-    print(Sorted_growth_wise_sector_list)
 
     for sec in Sorted_growth_wise_sector_list:
         sec['percentChange']=sec['percentChange'].rstrip('%')
