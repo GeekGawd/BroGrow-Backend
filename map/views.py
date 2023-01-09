@@ -137,3 +137,5 @@ class LoanApplicationView(generics.GenericAPIView,
 
 
 print("hello")
+
+print("wow")
